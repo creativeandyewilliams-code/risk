@@ -1,0 +1,7 @@
+name = "ClaimStatusRouting"
+defaultTargets = ["ClaimStatusRouting"]
+
+[[lean_lib]]
+name = "ClaimStatusRouting"
+roots = ["ClaimStatusRoutingV82"]
+srcDir = "lean"

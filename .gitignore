@@ -1,0 +1,15 @@
+.lake/
+lake-manifest.json
+build/
+
+# LaTeX aux output (paper/ only — certs/logs/*.log build logs are tracked deliverables)
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.synctex.gz
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.bbl
+paper/*.blg
+paper/*.pdf

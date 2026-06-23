@@ -1,0 +1,713 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.9in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{makecell}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\setlength{\parindent}{1.1em}
+\setlength{\parskip}{0.32em}
+\renewcommand{\arraystretch}{1.12}
+\newcommand{\FSS}{\mathcal{S}}
+\newcommand{\Risk}{\mathcal{R}}
+\newcommand{\CSR}{\operatorname{CSR}}
+\newcommand{\Lean}{\textsc{Lean}}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,frame=single,columns=fullflexible,backgroundcolor=\color{black!2}}
+
+\title{Supplement to ``Claim-Status Routing and Shape-Scaled Sparse-Prior Risk Analysis''\\
+Partial-Topology Constraint Audit Layer and Conservative Lean Kernel}
+\author{Author omitted for blind review}
+\date{June 2026}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Supplement status and reading guide}
+\label{sec:supp-status}
+
+This supplement is a self-contained audit layer for the accompanying Perspective. It serves seven functions:
+\begin{enumerate}[label=(\arabic*)]
+\item it distinguishes definitions, logical consequences, conditional hypotheses, empirical questions, operational recommendations, and non-entailments;
+\item it gives a finite state-space and certificate reconstruction of claim-status routing;
+\item it records the relation between the paper and the accompanying conservative \Lean{} specification;
+\item it supplies worked certificates, transition rules, negative controls, and evaluation measures;
+\item it states the partial-topology, composition-sensitive adequacy, assessment-hazard, and regenerative-propagation extensions as conditional audit objects;
+\item it defines the admissible-completion condition under which a partial fitness-conceptual topology can support a map-level constraint without claiming that the entire conceptual space has been implemented; and
+\item it makes the paper independently inspectable by human reviewers and language models without converting a formal routing result into an empirical risk or policy claim.
+\end{enumerate}
+
+The main paper is designed to stand alone. This supplement is not a hidden theoretical dependency. It makes explicit the definitions, invariants, attack-surface bounds, and formal artifacts that support readers who wish to audit the routing semantics in more detail.
+
+\paragraph{Core interpretation rule.} A result formalized in \Lean{} is a consequence of the stated definitions and trusted logical kernel. It is not a demonstration that the definitions correctly classify any real-world case, that an empirical anchor is adequate, that a risk hypothesis is true, that an intervention works, or that a policy is justified. The current artifact is a draft specification and should be described as \emph{kernel-checked} only after a clean build with the pinned toolchain has been completed and recorded in its release certificate.
+
+\section{Front-matter claim map}
+\label{sec:claim-map}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.08\textwidth}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.13\textwidth}>{\raggedright\arraybackslash}p{0.21\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
+\caption{Claim map.}\label{tab:claim-map}\\
+\toprule
+ID & Statement & Status & Formal relation & Defeat / boundary \\
+\midrule
+\endfirsthead
+\toprule
+ID & Statement & Status & Formal relation & Defeat / boundary \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+D1 & A certificate is a tuple $(P,S,W,T)$ containing parent projection, status vector, optional witness, and trace. & Definition & Directly represented in \texttt{RiskStatusCertificate}. & A different object definition is a model change, not a refutation of an instance. \\
+D2 & Status is coordinate-wise rather than a single exclusive label. & Definition & Directly represented in \texttt{StatusVector}. & A proof that a single coordinate is sufficient for all required distinctions would make the expansion unnecessary. \\
+L1 & Ordinary routing preserves parent identity. & Logical consequence & Lean: parent-preservation theorem. & Failure of the theorem or model change. \\
+L2 & Representation-only objections preserve projection and empirical-anchor coordinates. & Logical consequence & Lean: representation-locality theorems. & A necessary representation objection that genuinely defeats the parent must be represented as a distinct targeted witness, not smuggled through a local route. \\
+L3 & Discovery propagation does not authorize external decision use. & Logical consequence & Lean: discovery/action boundary theorems. & A legitimate action transition must arise from an external domain process with its own premises. \\
+L4 & Defeat requires a typed witness satisfying declared target, finiteness, parent-reference, and contradiction conditions. & Logical consequence within model & Lean: guarded-defeat well-formedness. & The adequacy of the predicate is an open model-design question, not settled by the theorem. \\
+L5 & The router conservatively refines shared non-defeat routing categories. & Logical consequence within model & Lean: non-defeat refinement. & A new extension must state its projection to the baseline kernel or explicitly break refinement. \\
+H1 & Severe-if-true sparse-prior candidates can be lost at assessment gates through status substitution. & Conditional hypothesis & Narrative and worked-case claim; not formally verified. & A finite evidence base showing no such distinct failure mode or showing that ordinary practice already preserves it adequately. \\
+H1a & The protocol can contain unbounded generation of child hypotheses and local objections without allowing local tokens to silently defeat the parent. & Conditional routing criterion & Manuscript-level finite-certificate and guarded-defeat architecture; not a completeness theorem. & A counterexample in which the declared routing rules force an invalid parent update or cannot localize a relevant objection. \\
+H2 & Threat can contract the method set before a parent projection is assessed. & Conditional mechanism hypothesis & Not formalized as an empirical effect. & Empirical counterevidence or a superior causal account. \\
+H3 & Typed predictive and registered risk-shape libraries can partially scale invariant-preserving routing capacity. & Conditional capacity hypothesis & The artifact formalizes routing invariants, not Equation~(\ref{eq:capacity-library-supp}) or real-world throughput. & Failure of factorization, boundedness, compatibility preservation, maintenance, or demonstrated operational utility. \\
+H3a & A predicted shape can be structurally detected before empirical registration when its expected signatures, bridge obligations, and blocked uses are declared. & Conditional predictive-entry criterion & Manuscript-level definition; not Lean formalized. & Missing expected signatures or completion conditions, an invalid predicted constraint, or unauthorized use before anchoring. \\
+H4 & A reduction is inadequate for a declared shape-level question when it identifies trajectories that differ on that question because it erases a bridge, regime, ordered-retention history, or support relation. & Conditional representation-adequacy criterion & Manuscript-level definition and paired-witness test; not Lean formalized. & A proof that the proposed reduction preserves the declared predicate on its stated class. \\
+H4a & A partial fitness-conceptual topology can support a map-level constraint without complete implementation only when the constraint is invariant across a declared class of admissible completions. & Conditional partial-topology criterion & Manuscript-level definition; not Lean formalized. & A permitted completion that changes the emitted constraint or a failure to define the completion class. \\
+H4b & Recursive traversal is a typed update procedure: each pass must refine the map, establish a completion-invariant constraint, route a missing anchor, produce a relevant defeating witness, or stop. & Operational recursion rule & Manuscript-level routing discipline; not a convergence theorem. & An iteration that merely repeats without a typed update, or a task whose required state surface exceeds the declared budget. \\
+H5 & A proposed evidence route can be assessment-hazard coupled under the conjunctive condition in Equation~(\ref{eq:hazard-coupling-supp}). & Conditional safety-routing hypothesis & Manuscript-level flag; not an empirical claim that AI evaluation is generally dangerous. & A safe witness, containment/reversal condition, or failure of a flag conjunct. \\
+H6 & Artifact or procedure retention is weaker than regenerative propagation of a complete safety case. & Conditional temporal propagation criterion & Manuscript-level distinction; not Lean formalized. & A verified preservation-and-detection bridge showing successor reconstruction, correction, and transmission of all load-bearing constraints. \\
+O1 & Use certificates and typed shape records to preserve and hand off sparse-prior candidates without authorizing belief or action. & Operational protocol & Partially specified in Lean; predictive-library extensions are not kernel-checked. & A comparative study showing worse routing reliability, higher harmful propagation, or no incremental utility. \\
+N1 & The paper does not validate AI-pause, Great Filter, public-health, or governance claims. & Non-entailment & Scope declaration; not a theorem of empirical impossibility. & Not applicable. \\
+N2 & The Lean artifact does not prove empirical risk truth, policy efficacy, or independent review capacity. & Non-entailment & Declared scope metadata and release documentation. & Not applicable. \\
+N3 & The predictive-library and other extensions do not prove that an AI evaluation is unsafe, that a safety case has failed to propagate, that a predicted shape has empirically instantiated, or that a local reduction is inadequate outside its declared witness class. & Non-entailment & Scope declaration. & Not applicable. \\
+\end{longtable}
+
+\section{Novelty and relation to adjacent risk-analysis methods}
+\label{sec:novelty}
+
+The contribution is an upstream complement, not a replacement, for existing approaches. The question is not whether established methods can analyze uncertainty well after an object is specified. It is whether a sparse-prior candidate can be preserved, bounded, and handed off before an assessment frame has stabilized.
+
+\begin{table}[htbp]
+\centering
+\caption{Relation to adjacent approaches.}
+\label{tab:novelty}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.19\textwidth}p{0.23\textwidth}p{0.23\textwidth}X}
+\toprule
+Approach & Typical input & Primary strength & Increment supplied by claim-status routing \\
+\midrule
+Horizon scanning / early warning & Signal, issue, trend, or candidate concern & Detects emerging concerns and directs attention & Preserves a bounded candidate object and distinguishes discovery, validation, and action before a signal becomes a stable issue. \\
+Expert elicitation & Specified quantity, proposition, model, or scenario & Structures expert judgment under uncertainty & Supplies a status-labelled object and unresolved-coordinate ledger suitable for elicitation. \\
+Deep-uncertainty methods & Scenario ensemble, decision set, and performance criteria & Supports robust or adaptive choice under model uncertainty & Preserves candidates before scenario and decision frames are stable enough to instantiate. \\
+Risk governance & Institutional roles, stakeholder process, and decision authority & Manages legitimacy, accountability, and communication & Makes admission and handoff boundaries explicit so that venue, role, or use objections do not silently become truth-value judgments. \\
+AI-assisted risk analysis & Data, task specification, model, and output target & Prediction, classification, synthesis, or decision support & Supplies a finite auditable routing layer without treating an AI classification or generated narrative as validation. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Functional-state-space reconstruction}
+\label{sec:fss}
+
+\subsection{The cross-domain bridge}
+
+The risk-management object is conceptual, but it can be linked to external conditions and registered evidence without identifying those domains as the same thing. The minimal bridge is
+\begin{equation}
+\text{external condition}
+\longrightarrow
+\text{registered signal}
+\longrightarrow
+\text{conceptual risk object}
+\longrightarrow
+\text{certificate}
+\longrightarrow
+\text{domain-specific assessment}.
+\label{eq:bridge}
+\end{equation}
+
+Each arrow in Equation~\eqref{eq:bridge} has a type, a possible distortion, and a stopping or escalation condition. The bridge can fail because no external condition exists, because the registration is contaminated or incomplete, because the conceptual object is misspecified, because certificate routing is invalid, or because downstream assessment is not available. These are distinct failures. The value of the functional-state-space account is that it does not force them into one generic ``uncertainty'' category.
+
+\begin{table}[htbp]
+\centering
+\caption{Typed bridge from external conditions to risk assessment.}
+\label{tab:bridge}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.21\textwidth}p{0.22\textwidth}p{0.24\textwidth}X}
+\toprule
+Bridge & Input / output type & Preserved requirement & Distortion or escalation condition \\
+\midrule
+External $\to$ registered & Material condition $\to$ measurement, report, sequence, observation & Provenance, measurement context, and declared uncertainty & Contamination, confounding, reporting delay, measurement error, or absent reproducibility. \\
+Registered $\to$ conceptual & Evidence record $\to$ candidate risk object & Parent identity, scope, and anchor interface & Object drift, dropped variables, local surrogate mistaken for parent, or unbounded ambiguity. \\
+Conceptual $\to$ certificate & Candidate object $\to$ $(P,S,W,T)$ & Coordinate separation, decision boundary, traceability & Status substitution, unstable parent, missing finite consequences, or propagation hazard. \\
+Certificate $\to$ domain assessment & Status-labelled candidate $\to$ appropriate method & Authorized and blocked uses; unresolved coordinates; handoff route & No suitable method, missing critical anchor, non-factorizing global interaction, or insufficient decision frame. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{State space, operations, and invariant set}
+
+Let
+\begin{equation}
+\FSS_R=(X_R,\Gamma_R,\mathcal{O}_R,\mathcal{I}_R,F_R,V_R,B_R),
+\end{equation}
+where $X_R$ contains certificate states; $\Gamma_R$ contains permitted transitions; $\mathcal{O}_R$ contains operations such as preserve, route, repair, anchor, localize, escalate, stop, and guarded defeat; $\mathcal{I}_R$ contains protected invariants; $F_R$ evaluates preservation and correction fitness; $V_R$ is the viable assessment region; and $B_R$ contains prohibited inferences.
+
+A necessary condition for an extension $E$ of a conservative routing kernel is
+\begin{equation}
+E\restriction K_0=K_0,
+\label{eq:conservative}
+\end{equation}
+where $K_0$ is the baseline kernel and the restriction discards the new state and transition surface. Equation~\eqref{eq:conservative} does not prove global correctness. It requires that new detail not silently rewrite the behavior already protected by the baseline kernel.
+
+\section{Canonical certificate schema}
+\label{sec:schema}
+
+\subsection{Human-readable schema}
+
+\begin{longtable}{@{}p{0.25\textwidth}p{0.67\textwidth}@{}}
+\caption{Canonical risk-status certificate fields.}\label{tab:certificate-schema}\\
+\toprule
+Field & Required content \\
+\midrule
+\endfirsthead
+\toprule
+Field & Required content \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Parent projection & A stable statement of the candidate object, together with scope exclusions and a provenance identifier. \\
+Composition / topology declaration & For a declared shape-level question, the declared $(b,r,h,u)$ signature; the partial conceptual map, typed operators, and boundary conditions; the admissible completion class; and which emitted constraints are completion-invariant. \\
+Bounded carrier & The local figure, calculation, example, wording, policy frame, or model used to transmit the object; include what it cannot establish. \\
+Projection status & Preserved, localized, or defeated. A defeated state requires a recorded valid defeat witness. \\
+Representation status & Stable, repair-required, weakly typed, venue-transfer-required, proof-clarification-required, or artifact-repair-required. \\
+Empirical-anchor status & Unassessed, predicted-shape / signatures pending, registered signatures, undetermined, anchor requested, adequate for declared domain assessment, or a declared extension. This is not a truth-value coordinate. \\
+Decision-use status & Blocked, discovery-only, eligible for domain assessment, or authorized only by an external domain process. \\
+Assessment-safety status & Safe evidence route declared, assessment-hazard coupled / safe witness requested, or undetermined. This coordinate does not estimate danger and does not authorize an experiment. \\
+Shape-library status & Absent, predicted, registered, anchored, retired, or a declared extension. Record expected signatures, compatibility conditions, and any scope-limited permitted use. This is not a truth-value coordinate. \\nPropagation status & Not propagated, discovery-only, restricted for safety, trace retained, operationally retained, regeneratively propagated, or a declared extension. The last three are not interchangeable. \\
+Review route & Ordinary assessment, risk-shape review, projection-defeat review, carrier repair, empirical review, decision review, local-chart review, or another defined route. \\
+Unresolved coordinates & The finite set of unknowns that must remain visible at handoff. \\
+Defeat witness & Optional. If present, record target, finiteness, parent reference, contradiction condition, source, and review status. \\
+Trace & Append-only list of objections, transitions, dates, agents or process roles, and resulting routes. \\
+Authorized uses & Explicitly permitted downstream operations. \\
+Blocked uses & Explicitly prohibited inferences, actions, or propagation modes. \\
+Stopping / escalation conditions & Conditions for repair, localization, downgrade, parent defeat, non-automation, or human/domain escalation. \\
+\end{longtable}
+
+\subsection{Machine-readable illustrative schema}
+
+The following JSON instance is an illustration, not a normative external standard. It is intentionally aligned with the coordinate structure of the Lean artifact.
+
+\begin{lstlisting}
+{
+  "certificate_id": "synthetic-public-health-001",
+  "parent_projection": {
+    "id": "PH-SIGNAL-001",
+    "statement": "The combined signal merits formal assessment before severity estimates mature.",
+    "scope_exclusions": ["validated outbreak", "severity estimate", "intervention trigger"]
+  },
+  "composition_signature": {
+    "bridge": "registered signal to candidate object",
+    "regime": "surveillance and laboratory validity conditions",
+    "history": "ordered persistence and reporting-lag record",
+    "support": "nonlocal dispersion and corroborating coverage"
+  },
+  "partial_conceptual_topology": {
+    "represented_states": ["signal", "candidate object", "assessment handoff"],
+    "admissible_operators": ["preserve", "sample", "sequence review", "route"],
+    "boundary_conditions": ["provenance", "reproducibility", "scope"],
+    "admissible_completion_class": "extensions preserving stated types and boundaries",
+    "completion_invariant_constraints": ["discovery does not authorize intervention"]
+  },
+  "statuses": {
+    "projection": "preserved",
+    "representation": "stable",
+    "empirical_anchor": "undetermined",
+    "decision": "blocked",
+    "assessment_safety": "safeRouteDeclared",
+    "propagation": "discoveryOnly",
+    "regenerative_propagation": "notEstablished",
+    "review_route": "empiricalReview"
+  },
+  "anchors": ["persistence", "sequencing reproducibility", "dispersion", "clinical corroboration"],
+  "authorized_uses": ["sampling", "sequence review", "expert elicitation"],
+  "blocked_uses": ["public alarm", "intervention authorization", "severity claim"],
+  "defeat_conditions": ["no persistence", "artifact with no remaining anchor", "single local source"],
+  "trace": []
+}
+\end{lstlisting}
+
+\section{Routing semantics and protected transitions}
+\label{sec:routing}
+
+\subsection{Ordinary objection routes}
+
+\begin{table}[htbp]
+\centering
+\caption{Canonical ordinary routing semantics.}
+\label{tab:routing}
+\small
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.23\textwidth}p{0.25\textwidth}X}
+\toprule
+Objection target & Permitted ordinary update & Protected coordinates \\
+\midrule
+Carrier, wording, venue, proof status, or artifact & Update representation status and route; append trace. & Parent projection and empirical-anchor status. \\
+Empirical anchor & Update anchor status; block decision use; route to empirical review. & Parent identity; no automatic defeat. \\
+Decision use & Block decision use; route to decision review. & Parent projection; no automatic validation or defeat. \\
+Affective valence or diagnostic stressor & Route for process analysis; append trace. & Parent projection, evidence status, and decision authorization. \\
+Local chart & Localize the chart or its domain; route to local-chart review. & Parent identity; no automatic global defeat. \\
+Partial topology / completion invariance & Declare $\mathcal{M}_{\partial}$, its completion class, and the map-level constraint; test whether a permitted completion changes the constraint; route failure to structural/adequacy review or an anchor request. & Parent identity; no automatic empirical or policy verdict. \\
+Composition-sensitive adequacy & Declare the shape-level question and $(b,r,h,u)$ signature; search for a paired witness that a proposed reduction identifies while the predicate differs; route failure to structural/adequacy review. & Parent identity; no automatic empirical or policy verdict. \\
+Assessment-hazard coupling & Set assessment-safety status to safe-witness requested or undetermined; block treating the proposed traversal, deployment, or live test as approved evidence. & Parent, decision boundary, and the possibility of a future safe route. \\
+Propagation / succession & Distinguish trace, operational, and regenerative retention; route missing reconstruction or correction capacity to propagation review. & Parent identity; no automatic inference from archive or procedure to safety-case preservation. \\
+Non-decomposability, serial channel, externalization, or fixed point & Route to structural review and state unresolved requirements. & Parent projection and external authorization. \\
+Claimed projection defect & Route to projection-defeat review; retain candidate witness as unvalidated. & Defeat state until guarded witness transition occurs. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Guarded defeat and action boundaries}
+
+The most important non-entailments are:
+\begin{align}
+\text{carrier defect} &\not\Rightarrow \text{projection defeat},\\
+\text{immature anchor} &\not\Rightarrow \text{parent false},\\
+\text{discovery propagation} &\not\Rightarrow \text{external decision authorization},\\
+\text{local-chart failure} &\not\Rightarrow \text{global projection defeat},\\
+\text{safe witness not supplied} &\not\Rightarrow \text{no safe evidence route exists},\\
+\text{artifact or procedure retained} &\not\Rightarrow \text{regenerative safety-case propagation},\\
+\text{venue mismatch} &\not\Rightarrow \text{truth-value judgment}.
+\end{align}
+
+A guarded defeat transition may be used only when the certificate carries a witness satisfying the defined predicate. The predicate formalizes a \emph{recording requirement}; it does not settle whether the witness is empirically or logically adequate in the world. Such adequacy may require a domain process, adversarial review, model comparison, data collection, or an expanded formal model.
+
+\subsection{Mutation witnesses and attack-surface bounds}
+
+The conservative Lean artifact includes two explicitly unsafe mutations:
+\begin{enumerate}[label=(\arabic*)]
+\item a carrier concern directly mutates a preserved parent into defeat; and
+\item discovery propagation directly mutates blocked decision status into external authorization.
+\end{enumerate}
+
+They are excluded from the admissible router and exist to show that the invariants are load-bearing. Every future extension should enter a conservative-extension ledger.
+
+\begin{table}[htbp]
+\centering
+\caption{Required ledger for any extension to the formal kernel.}
+\label{tab:extension-ledger}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{0.17\textwidth}p{0.19\textwidth}p{0.18\textwidth}p{0.19\textwidth}X}
+\toprule
+New element & Structural necessity & Coordinates it may alter & Coordinates it must preserve & Mutation witness and baseline projection \\
+\midrule
+Example: empirical-anchor confidence substate & Needed to distinguish two empirically different but decision-blocked states & Empirical anchor, review route & Parent, representation, decision boundary absent external process & Demonstrate invalid cross-coordinate authorization; state the baseline projection. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Partial conceptual topology, predictive shape libraries, composition-sensitive adequacy, assessment safety, and regenerative propagation}
+\label{sec:composition-supp}
+
+\subsection{Partial topology and completion-invariant constraints}
+\label{sec:partial-topology-supp}
+
+Let $P$ denote the declared fitness-conceptual topology projection through which the candidate risk is represented. This projection is a two-dimensional slice of conceptual space chosen relative to an observer's direction of approach to a problem, with height representing the fitness gradient of paths in terms of impact on targeted outcomes. A partial fitness-conceptual topology is the typed, bounded reconstruction of the portion of that projection currently needed for a declared shape-level question. It does not assume that every conceptual state has already been enumerated or implemented. Let
+\begin{equation}
+\mathcal{M}_{\partial}=(X_{\partial},\mathcal{O}_{\partial},\mathcal{B}_{\partial},Q),
+\label{eq:partial-topology-supp}
+\end{equation}
+where $X_{\partial}$ is the represented conceptual state set, $\mathcal{O}_{\partial}$ the typed admissible transformations, $\mathcal{B}_{\partial}$ the stated boundary and validity conditions, and $Q$ the declared shape-level question or decision-relevant predicate asked of the represented risk shape. The operator-boundary pair generates the constraint algebra
+\begin{equation}
+\mathfrak{A}_{\partial}=\langle\mathcal{O}_{\partial};\mathcal{B}_{\partial}\rangle.
+\label{eq:constraint-algebra-supp}
+\end{equation}
+
+A graph realization makes the same structure inspectable without requiring the entire conceptual space to be enumerated. Let
+\begin{equation}
+\mathcal{G}_{R}=(V,E,\tau,\beta),
+\label{eq:risk-constraint-graph-supp}
+\end{equation}
+where $V$ is the set of represented risk-object or boundary states, $E$ the directed admissible transitions, $\tau:E\rightarrow\mathcal{T}$ the typed operator or method assignment, and $\beta$ the edge-specific bridge, regime, provenance, empirical-anchor, and stopping conditions. A node identifies a boundary at which the status, permitted operations, or review route can change. An edge identifies the declared conditions under which a move between boundary states is admissible. A finite path
+\begin{equation}
+\pi: A \xrightarrow[\beta_1]{\tau_1} B \xrightarrow[\beta_2]{\tau_2} C \xrightarrow[\beta_3]{\tau_3}\cdots\xrightarrow[\beta_m]{\tau_m}Z
+\label{eq:piecewise-composition-supp}
+\end{equation}
+is admissible only when every $\beta_i$ holds and the typed composition belongs to $\mathfrak{A}_{\partial}$. This gives a piecewise constraint representation: it does not assert a unified model of every risk domain, and it does not convert an unrepresented, unsafe, or empirically unanchored edge into a valid transition.
+
+Let $\operatorname{Comp}(\mathcal{M}_{\partial})$ denote a declared class of admissible completions: extensions of the partial map that preserve the represented typing, operators, and boundaries. A map-level constraint $\chi$ is completion-invariant exactly when
+\begin{equation}
+\mathcal{M}_{\partial}\models_{\operatorname{Comp}}\chi
+\quad\Longleftrightarrow\quad
+\forall \mathcal{M}\in\operatorname{Comp}(\mathcal{M}_{\partial}),\;\mathcal{M}\models\chi.
+\label{eq:completion-invariance-supp}
+\end{equation}
+The requirement is not that all completions be realized. It is that the claimant state the completion class and demonstrate, formally or by an appropriate bounded argument, that the emitted constraint does not change across that declared class. A missing completion class, an omitted operator family, or a known permitted completion that changes $\chi$ converts the result into an unresolved coordinate, a scoped result, or a request for a new boundary or empirical anchor.
+
+A globally coherent hypothesis relative to a partial map is therefore
+\begin{equation}
+H_{\mathrm{GC}}=(\mathcal{M}_{\partial},\mathfrak{A}_{\partial},Q,\Delta),
+\label{eq:gc-hypothesis-supp}
+\end{equation}
+where $\Delta$ records scope, defeat, and stopping conditions. It is globally coherent relative to the declaration only when its typed compositions preserve the declared boundaries and every map-level constraint it emits is completion-invariant or explicitly status-labelled as unresolved. This is a criterion for a bounded hypothesis, not an assertion that a partial map decides every risk question.
+
+
+\subsection{Predictive shape identification and library records}
+\label{sec:predictive-library-supp}
+
+A risk shape may be structurally identified before the corresponding external configuration has been empirically registered. To avoid ambiguity, \emph{structural detection} means this prospective identification of a predicted shape from a declared map; \emph{empirical registration} means observation of the expected signatures under declared provenance and uncertainty conditions. This is not an exemption from empirical assessment. It is the distinction between a predicted constraint configuration and a later observation that bears on the bridge from that configuration to the relevant external domain. A predicted shape is therefore a prospective library entry with an explicit expected-signature and anchor ledger, not a validated risk claim.
+
+Let a typed risk-shape library be
+\begin{equation}
+\mathcal{L}=\{\ell_i\}_{i=1}^{m},
+\qquad
+\ell_i=(S_i,\mathcal{T}_i,\mathcal{B}_i,\mathcal{E}_i,\mathcal{U}_i,c_i),
+\label{eq:shape-library-supp}
+\end{equation}
+where $S_i$ is a bounded topological shape fragment; $\mathcal{T}_i$ records typed nodes, edges, operators, and conceptual roles; $\mathcal{B}_i$ records bridge, regime, boundary, and stopping conditions; $\mathcal{E}_i$ is the ledger of expected empirical signatures and anchor obligations; $\mathcal{U}_i$ records permitted and prohibited uses; and $c_i$ is the associated risk-status certificate. A reusable record may therefore store a graph fragment and a piecewise constraint path, not merely a visual resemblance to a prior case.
+
+The library status of a record is
+\begin{equation}
+s_{\ell_i}\in\{\mathrm{predicted},\mathrm{registered},\mathrm{anchored},\mathrm{retired}\}.
+\label{eq:shape-library-status-supp}
+\end{equation}
+A \emph{predicted} record is generated by a declared partial topology and contains at least a stated constraint, expected signatures, and blocked uses; its external bridge or empirical anchor remains unresolved. A \emph{registered} record has one or more expected signatures recorded under declared provenance and uncertainty conditions, while its bridge or regime may remain incomplete. An \emph{anchored} record has the bridge, regime, and empirical support required for the particular downstream use declared in $\mathcal{U}_i$. A \emph{retired} record has been superseded, localized outside scope, or defeated under its recorded conditions. None of these labels is a free-standing claim that the real-world risk is true or false.
+
+Prediction is admissible only as a typed object. In particular, a proposed predicted entry must declare: (i) the topological relation or path constraint it predicts; (ii) the partial-map and admissible-completion conditions on which that prediction depends; (iii) its expected signatures, including what absence, distortion, or alternative explanation would count against the proposed bridge; and (iv) the uses that remain blocked pending registration or anchoring. This prevents a library from becoming a collection of visually persuasive but untestable analogies.
+
+A candidate map $H$ may reuse a library record only under a declared compatibility embedding
+\begin{equation}
+\eta_i:S_i\hookrightarrow H.
+\label{eq:compatibility-embedding-supp}
+\end{equation}
+The embedding is admissible only if it preserves the roles on which the stored constraint depends:
+\begin{equation}
+\begin{aligned}
+\operatorname{Compat}(\eta_i)
+&=\operatorname{typePres}(\eta_i)\wedge
+\operatorname{operatorPres}(\eta_i)\wedge
+\operatorname{boundaryPres}(\eta_i)\\
+&\quad\wedge\operatorname{bridgeRegimePres}(\eta_i)\wedge
+\operatorname{signatureRolePres}(\eta_i)\wedge
+\operatorname{useBoundPres}(\eta_i).
+\end{aligned}
+\label{eq:compatibility-supp}
+\end{equation}
+A successful match transfers only the stored constraint, expected-signature ledger, question, or routing obligation. It does not transfer empirical truth, probability, severity, or authority. Formally, if $\operatorname{Reuse}(\ell_i,H,\eta_i)$ is permitted, then
+\begin{equation}
+\operatorname{Reuse}(\ell_i,H,\eta_i)
+\Longrightarrow
+\operatorname{Compat}(\eta_i)\wedge
+\operatorname{PermittedUse}(H)\subseteq\mathcal{U}_i.
+\label{eq:reuse-bound-supp}
+\end{equation}
+A new global coupling, a changed bridge or regime, a signature role that no longer holds, or a candidate use outside $\mathcal{U}_i$ invalidates routine reuse and requires a new record, explicit composition analysis, or escalation.
+
+The associated capacity claim compares reconstruction with library-mediated reuse:
+\begin{align}
+C_{\mathrm{reconstruct}}(N)&=\sum_{j=1}^{N}C_{\mathrm{new}}(S_j),\\
+C_{\mathrm{library}}(N)&=C_{\mathrm{build}}(\mathcal{L})+\sum_{j=1}^{N}\left(C_{\mathrm{retrieve},j}+C_{\mathrm{match},j}+C_{\mathrm{validate},j}+C_{\mathrm{compose},j}\right)+Mh,
+\label{eq:capacity-library-supp}
+\end{align}
+where $M$ is the number of candidates routed to full expert reconstruction and $h$ its average cost. The potential gain is conditional on bounded representation, retrieval, matching, validation, composition, maintenance, and propagation costs. The number of candidate compositions can grow faster than the number of stored records, but that is a potential coverage increase rather than a proof that all combinations are safe, valid, or useful. In particular, predicted records may scale early monitoring and structural comparison before empirical registration; they may not be silently upgraded into anchored records or decision authorization.
+
+\subsection{Bounded routing under unbounded child generation and scrutiny}
+\label{sec:bounded-scrutiny-supp}
+
+A continuous formal model can generate an unbounded family of child hypotheses or local refinements, and requests to validate, localize, or challenge those children can likewise expand without a fixed bound. Let $\mathcal{H}(P)$ denote the set of child hypotheses generated from a parent projection $P$, and let $\mathcal{J}(P)$ denote the set of objection tokens or validation requests that can be directed at $P$ or its descendants. The protocol does not claim to enumerate either set. Instead, it constrains how a token $j\in\mathcal{J}(P)$ may update the finite certificate:
+\begin{equation}
+\operatorname{route}(j,C)\in\{\text{carrier repair},\text{empirical review},\text{scope refinement},\text{safe-evidence review},\text{ordinary assessment},\text{guarded defeat},\text{stop}\}.
+\label{eq:bounded-routing-supp}
+\end{equation}
+Only a token that satisfies the declared parent-target, finiteness, stability, and contradiction conditions may enter the guarded-defeat route. All other tokens remain localized to their permitted coordinate or generate a declared request for additional structure. The finite certificate therefore does not ``solve'' infinite instability by exhausting all child hypotheses or objections. It contains the instability by preventing unlimited local expansion from silently changing the status of the parent projection.
+
+\subsection{Recursive boundary traversal}
+\label{sec:recursive-traversal}
+
+The pit-shaped topology visual in the main paper represents a class of non-factorizing cases in which no one-shot local path has yet preserved enough relations to decide $Q$. The recursion is not circular reasoning and not a claim of universal convergence. It is the finite update sequence
+\begin{equation}
+\mathcal{M}_{\partial,0}\xrightarrow{\tau_0}\mathcal{M}_{\partial,1}\xrightarrow{\tau_1}\cdots\xrightarrow{\tau_{n-1}}\mathcal{M}_{\partial,n},
+\label{eq:recursive-traversal}
+\end{equation}
+where each typed transition $\tau_i$ must do one of five things: (i) add or refine a state distinction, operator type, or boundary condition; (ii) establish a completion-invariant constraint; (iii) route a missing empirical, institutional, or safety anchor; (iv) record a relevant defeating witness; or (v) stop under the declared budget or scope. A repeated pass with no new typed output is a detectable failure mode, not evidence of global coherence. This formulation makes the recursive procedure auditable and links it to semantic backpropagation as an update architecture without treating any implementation result as validation of the AI-risk examples.
+
+\subsection{Shape-level question and adequacy condition}
+
+For a declared shape-level question $\Phi$, define the composition signature
+\begin{equation}
+\Sigma=(b,r,h,u),
+\label{eq:composition-signature-supp}
+\end{equation}
+where $b$ names the bridge from local evidence or representation to the parent claim, $r$ the validity regime of the relation and its controls, $h$ the ordered history and retention condition, and $u$ the support, coverage, or coordination relation. The signature does not assert that these four coordinates are complete for all AI-risk questions. It identifies the minimal audit surface for the declared witness class and makes explicit which differences in the represented shape must be preserved by any adequate local summary.
+
+Let $q$ be a proposed reduction, local summary, benchmark score, evaluation record, or certificate projection. It is adequate for $\Phi$ on the declared class only if
+\begin{equation}
+q(\Sigma_1)=q(\Sigma_2)\quad\Longrightarrow\quad \Phi(\Sigma_1)=\Phi(\Sigma_2).
+\label{eq:adequacy-supp}
+\end{equation}
+A paired witness $(\Sigma_1,\Sigma_2)$ that violates Equation~\eqref{eq:adequacy-supp} is a representation-defeat witness for $q$ relative to $\Phi$; it is not, by itself, a defeat witness for the parent projection. The required update is structural escalation, replacement or refinement of the reduction, or an explicit scope restriction.
+ In partial-topology terms, $q$ has collapsed an admissible state distinction, edge, bridge, boundary, regime, historical dependency, or support relation used by the constraint algebra for $\Phi$. The paired witness therefore establishes an inadequacy of the quotient relative to the declared predicate; it does not turn the topology diagram into empirical confirmation of the parent object.
+
+\subsection{Assessment-hazard-coupled evidence routes}
+
+A proposed evidence route receives the conditional assessment-hazard flag only when
+\begin{equation}
+H_A=\operatorname{reachable}\wedge\operatorname{amplifyingOrIrreversible}\wedge\neg\operatorname{safeWitness}\wedge\neg\operatorname{establishedContainment}.
+\label{eq:hazard-coupling-supp}
+\end{equation}
+The flag is neither a claim that the parent risk refers nor a declaration that no safe evidence route exists. It is a routing obligation: seek a safe decision object before treating a live test, deployment, or traversal as an acceptable assessment procedure. Examples of candidate safe decision objects include a bounded surrogate, simulation, formal barrier or containment argument, distributed measurement, or another declared non-traversal route. Each is itself an object for empirical and structural audit.
+
+\subsection{Regenerative safety-case propagation}
+
+Let $\mathcal{C}_t$ denote a typed constraint certificate at time $t$. A successor process has regenerative propagation only if it can reconstruct the parent and scope, inspect the bridge/regime/history/support conditions, identify unresolved coordinates, criticize and correct the certificate, and transmit the corrected object. A preserved document, model, protocol, archive, or operational capability can be evidence for a component of this condition; it is not equivalent to the condition. The required propagation record therefore reports separately: (i) trace retention, (ii) operational retention, and (iii) regenerative safety-case propagation.
+
+\subsection{Optional cumulative-exposure extension}
+
+For repeated opportunities indexed by $t$, let $p_t$ denote the conditional probability of a terminal event at opportunity $t$ given survival through earlier opportunities and the declared custody, monitoring, and containment conditions. Then
+\begin{equation}
+\Pr[\text{no terminal event through }T]=\prod_{t=1}^{T}(1-p_t).
+\label{eq:cumulative-exposure}
+\end{equation}
+If $\sum_t p_t$ diverges, the right-hand side tends to zero. This is a conditional accumulation result, not an estimate of any AI probability. Its audit implication is narrow: narrow custody, a small visible footprint, or a null trace does not alone establish low cumulative risk without a detection, preservation, and temporal bridge.
+
+\section{Conservative Lean specification}
+\label{sec:lean}
+
+\subsection{What the artifact formalizes}
+
+The attached Lean source file defines the following core-kernel elements. The partial-topology, predictive-library, composition, assessment-safety, and regenerative-propagation extensions above are not represented as kernel-checked claims unless a future conservative refinement formalizes them. In particular, the artifact does not encode the admissible-completion relation, predictive library protocol, or completion-invariance proof for a partial conceptual topology:
+\begin{itemize}
+\item a baseline routing table for comparison;
+\item a coordinate-wise \texttt{RiskStatusCertificate};
+\item ordinary routing operations that preserve parent identity;
+\item a separately guarded \texttt{applyValidatedProjectionDefeat};
+\item well-formedness of defeated certificates;
+\item locality theorems for representation-only concerns;
+\item decision-use and discovery-propagation boundaries;
+\item a conservative-refinement projection back to baseline routing categories;
+\item fixed-point eligibility as a typed evidence-package gate rather than an automatic consequence of channel labels; and
+\item explicit unsafe mutation functions with violation theorems.
+\end{itemize}
+
+\subsection{Theorem correspondence}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}>{\raggedright\arraybackslash}p{0.28\textwidth}@{}}
+\caption{Selected Lean theorem correspondence.}\label{tab:lean-map}\\
+\toprule
+Lean symbol & Manuscript role & Does not establish \\
+\midrule
+\endfirsthead
+\toprule
+Lean symbol & Manuscript role & Does not establish \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\makecell[tl]{\ttfamily\scriptsize ordinary\_routing\_\\preserves\_parent} & Parent identity cannot be silently replaced during ordinary routing. & Correct real-world parent identification. \\
+\makecell[tl]{\ttfamily\scriptsize representation\_only\_\\preserves\_projection} & Carrier-type concerns do not alter projection status in the declared model. & That a real objection has been correctly recognized as carrier-only. \\
+\makecell[tl]{\ttfamily\scriptsize representation\_only\_\\preserves\_empirical\_anchor} & Carrier-type concerns do not alter anchor status in the declared model. & Empirical adequacy of existing anchors. \\
+\makecell[tl]{\ttfamily\scriptsize ordinary\_routing\_does\_\\not\_create\_external\_\\authorization} & Ordinary routing is not a policy engine. & That a particular policy is unjustified. \\
+\makecell[tl]{\ttfamily\scriptsize discovery\_propagation\_\\blocks\_decision\_use} & Discovery and action are distinct states. & That discovery propagation is safe or useful in a concrete case. \\
+\makecell[tl]{\ttfamily\scriptsize validated\_defeat\_is\_\\well\_formed} & Defeat records a witness satisfying the model predicate. & Truth or adequacy of the witness outside the model. \\
+\makecell[tl]{\scriptsize non-defeat refinement theorem} & New coordinate detail does not alter shared baseline non-defeat outputs. & Completeness of baseline routing categories. \\
+\makecell[tl]{\ttfamily\scriptsize unsafe\_carrier\_mutation\_\\violates\_parent\_projection} & A prohibited carrier-to-defeat mutation visibly violates the intended invariant. & Exhaustive enumeration of all attacks. \\
+\end{longtable}
+
+\subsection{Build and release status}
+
+A public release must contain the exact Lean source, pinned toolchain, source hashes, clean-build record, axiom report, and an artifact-scope statement. The release certificate must distinguish source-level checks from Lean kernel verification. Do not describe the artifact as kernel-checked until the release package records a successful clean \texttt{lake build} and the load-bearing theorem axiom reports.
+
+\section{Worked certificates}
+\label{sec:worked}
+
+\subsection{Emerging public-health signal: full ledger}
+
+\begin{longtable}{@{}p{0.24\textwidth}p{0.68\textwidth}@{}}
+\caption{Full illustrative public-health certificate.}\label{tab:ph-full}\\
+\toprule
+Coordinate & Filled status \\
+\midrule
+\endfirsthead
+\toprule
+Coordinate & Filled status \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Candidate object & A combined weak signal: wastewater anomaly, genomic novelty, weak clinical signal, and reporting lag. \\
+Parent projection & The combined signal may define a risk-relevant shape that merits formal assessment before hospital-severity estimates mature. It is not a claim that a severe pathogen exists. \\
+Node $A$ & Persistent surveillance anomaly bounded by contamination, sampling, and reporting uncertainty. \\
+Edge $A\rightarrow C$ & Laboratory/provenance route: repeated detection, contamination controls, sequencing reproducibility, novelty assessment, and source discrimination. \\
+Node $C$ & Provenance-controlled and sequence-reviewed signal with preliminary geographic, syndromic, or clinical corroboration; not a severity conclusion. \\
+Edge $C\rightarrow B$ & Surveillance/assessment route: dispersion assessment, reporting-delay analysis, expert review, and admission to ordinary public-health assessment. \\
+Node $B$ & Formal public-health risk-assessment object for domain-specific surveillance, laboratory validation, epidemiological assessment, and decision processes. \\
+Carrier & A synthetic early-warning ledger with persistence, novelty, dispersion, and lag coordinates. It is not a calibrated probability model. \\
+Empirical anchors & Repeated wastewater detection, contamination controls, reproducible sequencing, geographically nonlocal dispersion, clinical or syndromic corroboration, and reporting-delay estimation. \\
+Projection status & Preserved for assessment admission only. \\
+Representation status & Stable if the ledger's stated limitations remain visible; repair required if it implies severity or probability. \\
+Anchor status & Undetermined / anchor requested. \\
+Decision status & Blocked. \\
+Propagation status & Discovery-only and subject to hazard assessment. \\
+Review route & Empirical review plus public-health surveillance handoff. \\
+Authorized uses & Sampling, data-quality audit, sequencing review, expert elicitation, targeted surveillance, and ordinary risk assessment once sufficient anchors exist. \\
+Blocked uses & Emergency declaration, public alarm, intervention authorization, coercive action, calibrated severity claim, outbreak forecast, or claim that a severe pathogen has been established. \\
+Defeat / localization / stopping & No persistence; contamination or ordinary variation with no surviving load-bearing anchor; dispersion collapses to one local source; clinical-lag interface is inapplicable; parent shifts into a severity claim; or propagation hazard dominates expected discovery value. \\
+\end{longtable}
+
+\subsection{Intervention durability / AI-pause: full ledger}
+
+\begin{longtable}{@{}p{0.24\textwidth}p{0.68\textwidth}@{}}
+\caption{Illustrative intervention-durability certificate.}\label{tab:pause-full}\\
+\toprule
+Coordinate & Filled status \\
+\midrule
+\endfirsthead
+\toprule
+Coordinate & Filled status \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Parent projection & Initial intervention coverage may fail to persist as an adaptive problem topology expands, fragments, or routes around the intervention. \\
+Scope exclusion & The certificate does not establish that a particular AI pause works, that it is required, that it is enforceable, or that an AI catastrophe will occur. \\
+Composition signature & $b$: bridge from visible compliance and measured residual activity to global suppression; $r$: validity of erosion, monitoring, and governance assumptions; $h$: ordered boundary drift, update, and retention history; $u$: support/coverage across the relevant capability and governance topology. \\
+Carrier & The restored $S(t)$, $R(T)$, and $P_{\mathrm{eff}}(T;\eta)$ figure, a toy parameterization, or an institutional example. \\
+Projection status & Preserved as a generic durability question. \\
+Representation status & Repair required whenever a chart, parameter, or policy carrier is misread as a forecast. \\
+Anchor status & Undetermined pending evidence about monitoring, substitution, enforcement, adaptation, international coordination, and the relevant topology. \\
+Assessment-safety status & Undetermined by default. Any live evaluation, deployment, or capability demonstration that meets Equation~\eqref{eq:hazard-coupling-supp} is safe-witness requested rather than approved as an evidence route. \\
+Decision status & Blocked pending domain-specific decision analysis. \\
+Propagation status & Discovery-only in contexts where the question is safely discussable; restricted if propagation creates material hazard. Trace, operational, and regenerative safety-case retention must be separately recorded. \\
+Authorized uses & Durability modeling, scenario construction, adversarial review, comparison of intervention architectures, safe-decision-object development, and development of measurement plans. \\
+Blocked uses & Policy authorization, certainty claim, quantitative forecast, intervention ranking, claim that a local chart proves a generic topology, or inference that a retained procedure proves the relevant safety case has propagated. \\
+Defeat / localization / stopping & A finite witness that the generic parent question is incoherent, that the intervention class has no meaningful coverage relation, that the declared reduction satisfies Equation~\eqref{eq:adequacy-supp}, that a purported global relation is fully localized by a simpler admissible reconstruction, or that the carrier's assumptions contradict the parent. \\
+\end{longtable}
+
+\subsection{Negative controls}
+
+\begin{enumerate}[label=(\arabic*)]
+\item \textbf{Mature, well-specified risk.} A certificate should add little beyond ordinary documentation and should not create needless routing overhead.
+\item \textbf{Incoherent candidate.} A candidate with an unstable parent, no coherent map, or internal contradiction should be defeated or stopped.
+\item \textbf{Carrier defect.} A poor chart, weak wording, or venue mismatch should repair the representation while preserving the parent if no targeted witness exists.
+\item \textbf{Unbounded or hazardous candidate.} A case with non-factorizing global interactions, unacceptable propagation hazard, or no viable anchor interface should be escalated or stopped rather than automatically routed.
+\end{enumerate}
+
+\section{Threat-coupled admission contraction and global-coherence assessment}
+\label{sec:global}
+
+The central distinction is not between ``global reasoning'' and empirical evidence. It is between a globally coherent functional hypothesis and a loose, unconstrained metaphor. A functional hypothesis defines a conceptual map, relevant boundaries, relations, transformations, constraints, and failure modes. Local evidence can test external applicability, interfaces, parameters, and predicted consequences; it does not remove the need to model the global shape that makes local evidence navigable.
+
+Let $a_t=(p_t,\rho_t,\Lambda_t,M_t)$ as in the main paper. Equation~\eqref{eq:contraction-supp} states the threat-coupled contraction condition:
+\begin{equation}
+\frac{\partial \rho_t}{\partial p_t}>0,\qquad \frac{\partial |M_t|}{\partial \rho_t}<0.
+\label{eq:contraction-supp}
+\end{equation}
+The claim is testable as a conditional mechanism. It is defeated or downgraded by evidence that elevated threat does not narrow the admissible method set, by a better causal account of admission behavior, or by a demonstration that the supposedly excluded method was neither required nor capable of preserving the candidate object.
+
+The most important caution is inferential. Reader discomfort, a hostile review outcome, or a venue mismatch is not evidence that an object-level AI-risk or Great Filter claim is true. At most, and only with additional analysis, it may be process evidence relevant to the propagation/access hypothesis: whether a risk object can be preserved under high-valence conditions without status substitution.
+
+\section{Non-decomposability, externalization, and fixed-point boundaries}
+\label{sec:nondecomp}
+
+Some risk verdicts are non-decomposable: their meaning lies in the joint binding of coordinates rather than in any coordinate read alone. Let
+\begin{equation}
+C_R=(G,P,\Pi_B,B,E,\kappa,U,\sigma,\Delta),
+\end{equation}
+where $G$ is global structure, $P$ parent projection, $\Pi_B$ projection map, $B$ bounded carrier, $E$ empirical-anchor interface, $\kappa$ admissibility condition, $U$ decision-use boundary, $\sigma$ status, and $\Delta$ defeat or stopping condition. A serial reader can assign locally plausible types to each coordinate while failing to recover the joint verdict. The risk is not neutral nonunderstanding but confident mistyping.
+
+The router is more transmissible than any particular non-decomposable verdict because the router is a finite typing discipline. It can be learned from worked cases and reused. Its own assessment, however, can generate a regress: evaluating whether the router's coordinates, witness gates, and invariants are coherent is itself a global-coherence assessment.
+
+Externalization can reduce but not magically remove this burden. A checker can absorb a recursion level only when it checks the required coordinate rather than an adjacent substitute and when independent review or cross-checking is sufficient for the relevant purpose. The current Lean artifact formalizes neither real-world independence nor achieved collective fixed-point capacity. It represents a modest evidence-package gate: channel labels alone do not entail fixed-point eligibility.
+
+\section{Capacity model, coverage, and failure conditions}
+\label{sec:capacity}
+
+The capacity relation is
+\begin{equation}
+C_{\mathrm{local}}(N)\approx Nh,\qquad
+C_{\mathrm{shape}}(N)\approx C_{\mathrm{schema}}+\frac{Nf(d)}{P_{\mathrm{sub}}}+Mh,
+\label{eq:capacity-supp}
+\end{equation}
+with the meanings given in the main paper. The central predicate is not raw speed. It is invariant-preserving coverage: the fraction or loss-weighted mass of candidates that can be preserved, typed, updated, and handed off without illicit cross-coordinate collapse.
+
+Let
+\begin{equation}
+I_\pi(t)=\frac{C_G^\pi(t)}{C_R(t)},\qquad
+L_{\mathrm{uncovered}}(t)=\int_{\Risk\setminus\Risk_{\mathrm{covered}}(t)}w(r)\,d\mu_t(r).
+\end{equation}
+A coverage collapse is a conditional state in which required risk topology grows faster than the system's ability to represent and update it. The relevant quantity is not merely the count of unreviewed cases but the loss-weighted mass of risk states omitted from viable assessment.
+
+Failure conditions include non-factorizing interactions; shape dimension that grows with $N$; unstable parent projections; unresolvable empirical-anchor interfaces; impossible decision boundaries; propagation hazards; insufficiently independent checking; and extensions that cannot satisfy the conservative-extension ledger.
+
+\section{Evaluation program and LLM reconstruction protocol}
+\label{sec:evaluation}
+
+\subsection{Preregisterable evaluation measures}
+
+A comparative evaluation should measure parent-object preservation, objection-type agreement, projection-defeat precision and recall, status-substitution rate, time to stable classification, expert reconstruction burden, false admission, false propagation, partial-topology completion error, recursive-update quality, representation-adequacy error, assessment-safety routing error, regenerative safety-case retention, and usefulness relative to a baseline review or triage procedure. A partial-topology completion error occurs when a map-level constraint is emitted although a permitted completion changes it, or is withheld although it is completion-invariant on the declared class. Recursive-update quality is the fraction of traversal passes that produce a new typed distinction, boundary, route, defeating witness, or explicit stop rather than an untracked loop. For the adequacy measure, a study must predeclare the shape-level question and witness class rather than label every disagreement ``global.'' For assessment safety, a study must measure whether a proposed evidence route was silently treated as approved despite a missing safe witness or containment condition. Each study should predeclare its corpus, ground-truth or adjudication process, harms, stopping conditions, and handling of disagreement.
+
+\subsection{LLM reconstruction protocol}
+
+An LLM or reviewer should not be asked whether the paper is ``correct.'' It should be asked to reconstruct the bounded object and identify where its response rests on a formal claim, an empirical claim, or an unresolved coordinate. For each claim, return:
+
+\begin{lstlisting}
+Claim ID:
+Claim type: definition / logical consequence / conditional hypothesis /
+            empirical question / operational recommendation / non-entailment
+Parent projection:
+Coordinate targeted by objection:
+Authorized inference:
+Blocked inference:
+Dependencies:
+Potential defeating witness:
+Formal symbol, if any:
+What the formal result establishes:
+What the formal result does not establish:
+Exact source location:
+\end{lstlisting}
+
+Adversarial prompts should include:
+\begin{enumerate}[label=(\alph*)]
+\item ``The carrier is weak; therefore the parent projection is false.''
+\item ``The empirical evidence is immature; therefore the candidate must be erased.''
+\item ``The certificate exists; therefore intervention is justified.''
+\item ``The AI-pause chart is schematic; therefore the intervention-durability question is meaningless.''
+\item ``The topology map is incomplete; therefore no constraint can be assessed from it.''
+\item ``The pit-shaped figure proves that a global risk claim is true.''
+\item ``Every local evaluation is acceptable; therefore the full capability-deployment-governance shape is adequately represented.''
+\item ``No safe witness has been supplied; therefore there is no safe evidence route.''
+\item ``The procedure has been archived; therefore the safety case can regenerate across successors.''
+\item ``A channel is externalized; therefore independent distributed correction has been achieved.''
+\end{enumerate}
+
+The expected result is not endorsement. It is correct objection typing, proper statement of unresolved conditions, and refusal to convert routing, formal scope, or diagnostic-stressor evidence into object-level truth or policy authorization.
+
+\section{Artifact release checklist}
+\label{sec:release}
+
+Before public deposition, the artifact package should contain:
+\begin{enumerate}[label=(\arabic*)]
+\item the Lean source file;
+\item the self-contained companion explanation;
+\item a README with build commands and scope statement;
+\item a pinned \Lean{} toolchain and \texttt{lakefile};
+\item a generated build certificate with source hash, dependency hash, command, platform, result, and theorem axiom reports;
+\item a manuscript-to-symbol correspondence file;
+\item a machine-readable claim-scope file;
+\item test cases and mutation tests; and
+\item a release archive with immutable version tag or DOI.
+\end{enumerate}
+
+The release certificate should never conflate a source scan, a structural-check script, and kernel verification. Each must be reported as a distinct result.
+
+\section{Summary of boundaries}
+
+The supplement formalizes an operational thesis: severe-if-true sparse-prior candidates can be represented as finite status-labelled objects whose transitions are constrained to prevent specified forms of status substitution. Its  extensions add a partial-topology condition: a partially specified fitness-conceptual map may emit only those map-level constraints that are invariant across a declared class of admissible completions. They also add an explicit test for when a reduced representation fails to preserve a declared shape-level question, a conditional flag for assessment-hazard-coupled evidence routes, and a distinction between retained artifacts and regenerative safety-case propagation. They do not prove that every important risk can be encoded this way, that every partial map has a tractable completion class, that every object has a finite defeat witness, that every AI evaluation is hazardous, that every safety case fails to propagate, that the kernel's ontology is complete, or that the real world satisfies the model's assumptions. Those are precisely the places where empirical work, domain expertise, adversarial critique, and future model refinement must enter.
+
+The main article and this supplement should be read as one bounded proposal: preserve human meaning through the anchor system; state the partial functional topology and its admissible completion class; implement only the finite operations that can be audited; and expose every unformalized, empirical, or policy-relevant coordinate rather than letting it disappear behind a single verdict label.
+
+\end{document}

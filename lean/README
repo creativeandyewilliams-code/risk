@@ -1,0 +1,29 @@
+ClaimStatusRoutingV82.lean — kernel module for the v87 risk-analysis artifact
+==============================================================================
+
+Scope statement (one paragraph)
+--------------------------------
+This module proves consequences of its own definitions in Lean 4's logic. A
+kernel-checked theorem here is a fact about the stated formal model only — it
+does not establish empirical risk truth, causal mechanisms, policy efficacy,
+reviewer behavior, governance feasibility, or real-world adequacy of any
+classification. Treat every theorem name as a claim about the model, never as
+an empirical or policy conclusion.
+
+Build
+-----
+This is a pure Lean 4 module: no `import`, no Mathlib.
+
+    rm -rf .lake
+    lake build
+
+Toolchain is pinned in `../lean-toolchain` (leanprover/lean4:v4.21.0).
+
+Current status
+--------------
+As of the certificate dated 2026-06-23T02:16:50Z, `lake build` FAILS (exit
+status 1). 14 of 23 theorems compile cleanly; 9 do not and exist only as
+unproved statements (Lean's `sorryAx` placeholder in single-file diagnostics).
+Do not treat this module as kernel-checked until `../build_certificate_v87.md`
+reports a clean build. See that file and `../certs/logs/lake_build_v87.log`
+for the exact failing theorems and errors.
