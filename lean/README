@@ -21,9 +21,10 @@ Toolchain is pinned in `../lean-toolchain` (leanprover/lean4:v4.21.0).
 
 Current status
 --------------
-As of the certificate dated 2026-06-23T02:16:50Z, `lake build` FAILS (exit
-status 1). 14 of 23 theorems compile cleanly; 9 do not and exist only as
-unproved statements (Lean's `sorryAx` placeholder in single-file diagnostics).
-Do not treat this module as kernel-checked until `../build_certificate_v87.md`
-reports a clean build. See that file and `../certs/logs/lake_build_v87.log`
-for the exact failing theorems and errors.
+As of the certificate dated 2026-06-23T06:28:20Z, `lake build` PASSES (exit
+status 0). All 23 theorems compile cleanly under the Lean kernel, with axiom
+dependencies confined to `propext` or none at all. See
+`../build_certificate_v87.md` for the full certificate and the fix log
+documenting the 9 theorems that previously failed to compile and were
+corrected (tactic-script fixes only — no proof was weakened, no `sorry` or
+`axiom` was introduced).

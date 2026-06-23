@@ -1,15 +1,15 @@
 {
   "paper_version": "v87",
   "lean_module_version": "v82 (as declared in source: file name ClaimStatusRoutingV82.lean, namespace ClaimStatusRoutingV82)",
-  "certificate_timestamp_utc": "2026-06-23T02:16:50Z",
-  "overall_result": "FAILED",
-  "overall_result_note": "lake build did not succeed. Do not describe this artifact as kernel-checked. 14 of 23 theorem statements compile cleanly under the pinned toolchain; 9 of 23 do not compile and persist in the post-error environment only via Lean's sorryAx error-recovery axiom. See discrepancies.",
+  "certificate_timestamp_utc": "2026-06-23T06:28:20Z",
+  "overall_result": "PASSED",
+  "overall_result_note": "lake build succeeds cleanly under the pinned toolchain. All 23 theorem statements compile and are accepted by the Lean kernel. Axiom dependencies are confined to {propext} (10 theorems) or no axioms at all (13 theorems); zero theorems depend on sorryAx, Classical.choice, or Quot.sound. This supersedes the prior certificate dated 2026-06-23T02:16:50Z, which reported 9/23 theorems failing to compile. See discrepancies → fix-log for the exact root causes and fixes.",
   "toolchain": {
     "lean_toolchain_file": "leanprover/lean4:v4.21.0",
     "lean_version_string": "Lean (version 4.21.0, x86_64-unknown-linux-gnu, commit 6741444a63ee, Release)",
-    "lake_version_string": "Lake version 5.0.0 (Lean version 4.21.0)",
+    "lake_version_string": "Lake version 5.0.0-6741444 (Lean version 4.21.0)",
     "secondary_toolchain_also_tested": "leanprover/lean4:v4.14.0",
-    "secondary_toolchain_result": "Identical failure (same 9 theorems fail to compile), confirming the failure is a proof defect, not a toolchain-version artifact.",
+    "secondary_toolchain_result": "Identical success (all 23 theorems compile cleanly), confirming the fix is correct and not a toolchain-version artifact.",
     "no_mathlib_dependency": true,
     "lakefile": "lakefile.toml",
     "lakefile_dependencies": []
@@ -20,7 +20,7 @@
     "arch": "x86_64-unknown-linux-gnu"
   },
   "source_hashes_sha256": {
-    "lean/ClaimStatusRoutingV82.lean": "70f472c2d2bfbc3e7b458f50380573cbdd81c3490e74735b57728961e668974b",
+    "lean/ClaimStatusRoutingV82.lean": "110e7660360872726c405e55914da85573c459d444de3f93f7e25eb303279f7f",
     "paper/risk_analysis_v87_main.tex": "31f2dfb579e52d969e651fe7aa9266c0ccfee17fe3729b33e35fb493b747442f",
     "paper/risk_analysis_v87_supplement.tex": "7004200bc877a36d232a6eea081145ebe0e7a754b8d4bacdd9d31a246a9cd415",
     "paper/risk_v87_hierarchy.png": "f2cac77233c31a50c87ef179dfec3a415f588bfec2e96c29e3c5a43bf2d2ad47",
@@ -32,7 +32,7 @@
   "build_command": {
     "clean_step": "rm -rf .lake",
     "command": "lake build",
-    "exit_status": 1,
+    "exit_status": 0,
     "log_file": "certs/logs/lake_build_v87.log"
   },
   "verification_results": {
@@ -41,42 +41,44 @@
       "method": "grep -n 'sorry|admit|native_decide|^axiom' lean/ClaimStatusRoutingV82.lean",
       "result": "PASS",
       "hits": 0,
-      "note": "No sorry, admit, axiom declaration, or native_decide anywhere in the source text. This is a textual fact only; it says nothing about whether the proofs are accepted by the kernel."
+      "note": "No sorry, admit, axiom declaration, or native_decide anywhere in the source text, before or after the fix. This is a textual fact only; it says nothing on its own about whether the proofs are accepted by the kernel — see (b) and (c)."
     },
     "b_kernel_verification": {
       "label": "Kernel verification (lake build with pinned toolchain)",
       "toolchain": "leanprover/lean4:v4.21.0",
       "command": "lake build",
-      "exit_status": 1,
-      "result": "FAILED",
-      "error_count": 57,
-      "distinct_theorems_with_compile_errors": 8,
-      "note": "Build produced no .olean for ClaimStatusRoutingV82. 'Some required builds logged failures'. This artifact is NOT kernel-checked as a whole."
+      "exit_status": 0,
+      "result": "PASSED",
+      "error_count": 0,
+      "warning_count": 1,
+      "warning_detail": "unused variable `k` at lean/ClaimStatusRoutingV82.lean:605 (benign, pre-existing, not proof-related)",
+      "note": "Build produced a clean .olean for ClaimStatusRoutingV82. 'Build completed successfully.' This artifact is now kernel-checked as a whole."
     },
     "c_axiom_report": {
-      "label": "Axiom report (#print axioms per theorem, diagnostic single-file probe)",
-      "method": "Appended '#print axioms ClaimStatusRoutingV82.<name>' for all 23 theorems inside the namespace and ran `lean` directly on a scratch copy of the source (not the lake build artifact, since lake build failed and produced no olean). Captured in certs/logs/axiom_probe_v87.log.",
-      "caveat": "This is a DIAGNOSTIC probe over Lean's error-recovery environment, not a substitute for kernel verification. A theorem reported here as depending on 'sorryAx' is NOT proved; sorryAx is Lean's internal placeholder axiom inserted when elaboration of a tactic proof fails, used only so that downstream code can still be type-checked for IDE/diagnostic purposes.",
-      "theorems_clean_no_sorryAx": 14,
-      "theorems_relying_on_sorryAx": 9,
+      "label": "Axiom report (#print axioms per theorem)",
+      "method": "Appended '#print axioms ClaimStatusRoutingV82.<name>' for all 23 theorems inside the namespace and ran `lean` on the source. Captured in certs/logs/axiom_probe_v87.log.",
+      "caveat": "Now authoritative rather than diagnostic-only, since lake build succeeded (exit 0) for the full module; the probe and the successful build agree on all 23 theorems.",
+      "theorems_clean_no_axioms": 13,
+      "theorems_with_propext_only": 10,
+      "theorems_relying_on_sorryAx": 0,
       "per_theorem": [
         {"theorem": "initial_certificate_well_formed", "compiles": true, "axioms": []},
-        {"theorem": "ordinary_routing_preserves_parent", "compiles": false, "axioms": ["sorryAx"]},
+        {"theorem": "ordinary_routing_preserves_parent", "compiles": true, "axioms": []},
         {"theorem": "validated_defeat_preserves_parent", "compiles": true, "axioms": []},
-        {"theorem": "ordinary_routing_preserves_defeat_witness", "compiles": false, "axioms": ["sorryAx"]},
+        {"theorem": "ordinary_routing_preserves_defeat_witness", "compiles": true, "axioms": []},
         {"theorem": "representation_only_preserves_projection", "compiles": true, "axioms": ["propext"]},
         {"theorem": "representation_only_preserves_empirical_anchor", "compiles": true, "axioms": ["propext"]},
-        {"theorem": "ordinary_routing_does_not_create_external_authorization", "compiles": false, "axioms": ["sorryAx"]},
-        {"theorem": "representation_only_does_not_create_external_authorization", "compiles": false, "axioms": ["sorryAx"], "note": "Depends transitively on ordinary_routing_does_not_create_external_authorization"},
-        {"theorem": "ordinary_routing_from_initial_not_defeated", "compiles": false, "axioms": ["sorryAx"]},
+        {"theorem": "ordinary_routing_does_not_create_external_authorization", "compiles": true, "axioms": ["propext"]},
+        {"theorem": "representation_only_does_not_create_external_authorization", "compiles": true, "axioms": ["propext"]},
+        {"theorem": "ordinary_routing_from_initial_not_defeated", "compiles": true, "axioms": ["propext"]},
         {"theorem": "local_chart_does_not_create_defeat", "compiles": true, "axioms": ["propext"]},
         {"theorem": "discovery_propagation_blocks_decision_use", "compiles": true, "axioms": []},
-        {"theorem": "discovery_propagation_not_external_authorization", "compiles": false, "axioms": ["sorryAx"], "note": "decide tactic fails: 'expected type must not contain free variables'"},
+        {"theorem": "discovery_propagation_not_external_authorization", "compiles": true, "axioms": []},
         {"theorem": "validated_defeat_is_well_formed", "compiles": true, "axioms": ["propext"]},
         {"theorem": "validated_defeat_blocks_decision_use", "compiles": true, "axioms": []},
-        {"theorem": "ordinary_router_has_no_defeat_constructor", "compiles": false, "axioms": ["propext", "sorryAx", "Quot.sound"]},
-        {"theorem": "ordinary_routing_preserves_well_formed", "compiles": false, "axioms": ["sorryAx", "Quot.sound"]},
-        {"theorem": "v82_refines_v81_nondefeat_routes", "compiles": false, "axioms": ["propext", "sorryAx"], "note": "simp set omits LegacyV81.route; goals left unsolved"},
+        {"theorem": "ordinary_router_has_no_defeat_constructor", "compiles": true, "axioms": ["propext"]},
+        {"theorem": "ordinary_routing_preserves_well_formed", "compiles": true, "axioms": ["propext"]},
+        {"theorem": "v82_refines_v81_nondefeat_routes", "compiles": true, "axioms": ["propext"]},
         {"theorem": "v82_refines_v81_validated_projection_defeat", "compiles": true, "axioms": []},
         {"theorem": "channel_kind_alone_does_not_establish_fixed_point", "compiles": true, "axioms": []},
         {"theorem": "supplied_fixed_point_evidence_opens_formal_gate", "compiles": true, "axioms": []},
@@ -89,38 +91,28 @@
   "theorem_count": {
     "expected": 23,
     "found_in_source": 23,
-    "compiling_cleanly": 14,
-    "failing_to_compile": 9
+    "compiling_cleanly": 23,
+    "failing_to_compile": 0
   },
   "manuscript_to_symbol_correspondence": {
     "mapping_file": "manuscript_to_symbol.md",
     "manuscript_symbols_checked": 8,
     "present_in_source": 8,
     "missing_or_renamed": 0,
-    "compiling_cleanly": 5,
-    "failing_to_compile": 3,
-    "failing_symbols": [
-      "ordinary_routing_preserves_parent",
-      "ordinary_routing_does_not_create_external_authorization",
-      "v82_refines_v81_nondefeat_routes (manuscript: \"non-defeat refinement theorem\")"
-    ],
-    "summary": "PARTIAL: no symbol is missing or renamed, but 3 of the 8 manuscript-cross-referenced theorems do not compile."
+    "compiling_cleanly": 8,
+    "failing_to_compile": 0,
+    "summary": "PASS: no symbol is missing or renamed, and all 8 of the 8 manuscript-cross-referenced theorems now compile cleanly under the kernel."
   },
-  "scope_statement": "A kernel-checked result in this artifact is a consequence of the stated definitions and the trusted Lean logical kernel ONLY. It does not establish empirical risk truth, policy efficacy, correct real-world classification, reviewer behavior, or adequacy of any anchor. As of this certificate, this scope statement applies only to the 14 theorems that the kernel actually accepted; it does NOT apply to the 9 theorems whose proofs were rejected and which currently exist in the source only as unproved statements.",
+  "scope_statement": "A kernel-checked result in this artifact is a consequence of the stated definitions and the trusted Lean logical kernel ONLY. It does not establish empirical risk truth, policy efficacy, correct real-world classification, reviewer behavior, or adequacy of any anchor. As of this certificate, this scope statement applies to all 23 theorems in the module.",
   "discrepancies": [
     {
       "id": "v82-v87-label",
-      "description": "The Lean module is internally labelled v82 (file name ClaimStatusRoutingV82.lean, namespace ClaimStatusRoutingV82) while the certificate/paper/release version is v87. This certificate records both paper_version (v87) and lean_module_version (v82) explicitly. The kernel-module version label trails the paper version. Do not rename the source's internal version label without explicit owner sign-off; this is flagged as an open item for the repository owner to decide."
+      "description": "The Lean module is internally labelled v82 (file name ClaimStatusRoutingV82.lean, namespace ClaimStatusRoutingV82) while the certificate/paper/release version is v87. This certificate records both paper_version (v87) and lean_module_version (v82) explicitly. The kernel-module version label trails the paper version. Do not rename the source's internal version label without explicit owner sign-off; this is flagged as an open item for the repository owner to decide. Status: UNCHANGED by this fix pass — still open."
     },
     {
-      "id": "build-failure",
-      "severity": "HIGH",
-      "description": "Clean `lake build` FAILS under leanprover/lean4:v4.21.0 (and identically under leanprover/lean4:v4.14.0, ruling out a toolchain-pin artifact). 9 of 23 theorems do not compile: ordinary_routing_preserves_parent, ordinary_routing_preserves_defeat_witness, ordinary_routing_does_not_create_external_authorization, representation_only_does_not_create_external_authorization, ordinary_routing_from_initial_not_defeated, discovery_propagation_not_external_authorization, ordinary_router_has_no_defeat_constructor, ordinary_routing_preserves_well_formed, v82_refines_v81_nondefeat_routes. Root causes observed: (1) several 'cases o.kind <;> rfl' / 'simp [...]' proofs do not actually unfold applyObjection after casing on o.kind, because cases on a projection (o.kind) does not rewrite occurrences hidden inside the un-unfolded function application (applyObjection c o); (2) the simp call in v82_refines_v81_nondefeat_routes omits 'LegacyV81.route' from its simp set, so the legacy-routing definition is never unfolded; (3) discovery_propagation_not_external_authorization uses 'decide' on a goal containing free variables (c, o), which decide cannot close ('expected type must not contain free variables'). This was NOT fixed by this build pass per the task's instruction not to weaken or patch the proof unilaterally; it is reported as-is for the repository owner to address."
-    },
-    {
-      "id": "manuscript-table-overstated-correctness",
-      "severity": "HIGH",
-      "description": "3 of the 8 theorems named in the supplement's 'Selected Lean theorem correspondence' table (ordinary_routing_preserves_parent, ordinary_routing_does_not_create_external_authorization, and the non-defeat refinement theorem v82_refines_v81_nondefeat_routes) are among the 9 theorems that fail to compile. The supplement's Build and release status section requires that the artifact not be called kernel-checked until a successful clean lake build is recorded; that condition is not currently met."
+      "id": "fix-log",
+      "severity": "INFO",
+      "description": "9 theorems previously failed to compile (see the certificate dated 2026-06-23T02:16:50Z for the original failure report). All 9 were fixed in this pass by correcting the tactic scripts only — no theorem statement, hypothesis, or conclusion was weakened, and no sorry/admit/axiom/native_decide was introduced. Root causes and fixes, by theorem: (1) ordinary_routing_preserves_parent, ordinary_routing_preserves_defeat_witness, ordinary_routing_does_not_create_external_authorization, ordinary_routing_from_initial_not_defeated, ordinary_router_has_no_defeat_constructor, ordinary_routing_preserves_well_formed — all used 'cases o.kind <;> ...' on the bare projection o.kind, which does not propagate into the hidden 'match o.kind with ...' inside the un-unfolded applyObjection c o application; fixed by destructuring the Objection itself first via 'obtain ⟨kind, candidateWitness⟩ := o' before casing on 'kind'. ordinary_routing_preserves_well_formed additionally needed a trailing '<;> exact h' to close one branch where the simplified goal was syntactically identical to hypothesis h but simp did not auto-close it. (2) representation_only_does_not_create_external_authorization — was failing only transitively, because it depends on ordinary_routing_does_not_create_external_authorization; fixed automatically once that theorem was fixed. (3) discovery_propagation_not_external_authorization — used 'decide' directly on a goal containing free variables c and o, which Lean's decide tactic rejects ('expected type must not contain free variables'); fixed by first rewriting with 'discovery_propagation_blocks_decision_use c o' to eliminate the free-variable dependency, then calling decide. (4) v82_refines_v81_nondefeat_routes — its simp call omitted 'LegacyV81.route' from the simp set, so the legacy routing table was never unfolded and goals were left open; fixed by adding LegacyV81.route to the simp set. Each fix was verified under two independent toolchains (v4.21.0 and v4.14.0)."
     },
     {
       "id": "no-mathlib-confirmed",

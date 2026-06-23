@@ -38,12 +38,13 @@ rm -rf .lake
 lake build
 ```
 
-**Current status: the build FAILS.** 14 of 23 theorems in
-`ClaimStatusRoutingV82.lean` compile cleanly under the Lean kernel; 9 do not
-(their proofs are rejected — see exact errors in
-`certs/logs/lake_build_v87.log`). Read `build_certificate_v87.md` before
-citing this artifact as "kernel-checked" or "formally verified" — as of this
-certificate it is neither, in full.
+**Current status: the build PASSES.** All 23 theorems in
+`ClaimStatusRoutingV82.lean` compile cleanly under the Lean kernel, with axiom
+dependencies confined to `propext` or none at all (no `sorryAx`, no
+`Classical.choice`, no `Quot.sound`) — see `certs/logs/lake_build_v87.log` and
+`certs/logs/axiom_probe_v87.log`. Read `build_certificate_v87.md` for the full
+certificate, including the fix log for 9 theorems that previously failed to
+compile and have since been corrected.
 
 ## Reading the certificate
 

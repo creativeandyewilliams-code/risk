@@ -387,7 +387,8 @@ theorem initial_certificate_well_formed (p : ParentProjection) :
 theorem ordinary_routing_preserves_parent
     (c : RiskStatusCertificate) (o : Objection) :
     (applyObjection c o).parent = c.parent := by
-  cases o.kind <;> rfl
+  obtain ⟨kind, candidateWitness⟩ := o
+  cases kind <;> rfl
 
 /-- The guarded defeat transition also preserves parent identity. -/
 theorem validated_defeat_preserves_parent
@@ -399,7 +400,8 @@ theorem validated_defeat_preserves_parent
 theorem ordinary_routing_preserves_defeat_witness
     (c : RiskStatusCertificate) (o : Objection) :
     (applyObjection c o).defeatWitness = c.defeatWitness := by
-  cases o.kind <;> rfl
+  obtain ⟨kind, candidateWitness⟩ := o
+  cases kind <;> rfl
 
 /-- Representation-only objections do not change projection status. -/
 theorem representation_only_preserves_projection
@@ -426,7 +428,8 @@ theorem ordinary_routing_does_not_create_external_authorization
     (c : RiskStatusCertificate) (o : Objection)
     (hBefore : c.statuses.decision ≠ .authorizedByExternalDomain) :
     (applyObjection c o).statuses.decision ≠ .authorizedByExternalDomain := by
-  cases o.kind <;>
+  obtain ⟨kind, candidateWitness⟩ := o
+  cases kind <;>
     simp [applyObjection, updateRepresentation, updateEmpiricalAnchor,
       updateDecisionBoundary, updateRouteOnly, updateLocalChart,
       localizeProjection] at hBefore ⊢ <;>
@@ -444,7 +447,8 @@ theorem representation_only_does_not_create_external_authorization
 theorem ordinary_routing_from_initial_not_defeated
     (p : ParentProjection) (o : Objection) :
     (applyObjection (initialCertificate p) o).statuses.projection ≠ .defeated := by
-  cases o.kind <;>
+  obtain ⟨kind, candidateWitness⟩ := o
+  cases kind <;>
     simp [applyObjection, initialCertificate, initialStatuses,
       updateRepresentation, updateEmpiricalAnchor, updateDecisionBoundary,
       updateRouteOnly, updateLocalChart, localizeProjection, propagateForDiscovery]
@@ -467,6 +471,7 @@ theorem discovery_propagation_blocks_decision_use
 theorem discovery_propagation_not_external_authorization
     (c : RiskStatusCertificate) (o : Objection) :
     (propagateForDiscovery c o).statuses.decision ≠ .authorizedByExternalDomain := by
+  rw [discovery_propagation_blocks_decision_use c o]
   decide
 
 /-- The guarded defeat transition records a valid witness and is well formed. -/
@@ -486,8 +491,9 @@ theorem ordinary_router_has_no_defeat_constructor
     (c : RiskStatusCertificate) (o : Objection) :
     (applyObjection c o).statuses.projection = .defeated ->
     c.statuses.projection = .defeated := by
+  obtain ⟨kind, candidateWitness⟩ := o
   cases hp : c.statuses.projection <;>
-    cases o.kind <;>
+    cases kind <;>
     simp [applyObjection, updateRepresentation, updateEmpiricalAnchor,
       updateDecisionBoundary, updateRouteOnly, updateLocalChart,
       localizeProjection, propagateForDiscovery, hp]
@@ -497,11 +503,13 @@ theorem ordinary_routing_preserves_well_formed
     (c : RiskStatusCertificate) (o : Objection)
     (h : certificateWellFormed c = true) :
     certificateWellFormed (applyObjection c o) = true := by
+  obtain ⟨kind, candidateWitness⟩ := o
   cases hp : c.statuses.projection <;>
-    cases o.kind <;>
+    cases kind <;>
     simp [certificateWellFormed, applyObjection, updateRepresentation,
       updateEmpiricalAnchor, updateDecisionBoundary, updateRouteOnly,
-      updateLocalChart, localizeProjection, propagateForDiscovery, hp] at h ⊢
+      updateLocalChart, localizeProjection, propagateForDiscovery, hp] at h ⊢ <;>
+    exact h
 
 /-! ## 5. Conservative refinement to the v81-style routing view -/
 
@@ -559,7 +567,7 @@ theorem v82_refines_v81_nondefeat_routes
     simp [embedLegacyObjection, applyObjection, projectLegacyStatus,
       initialCertificate, initialStatuses, updateRepresentation,
       updateEmpiricalAnchor, updateDecisionBoundary, updateRouteOnly,
-      updateLocalChart, localizeProjection] at h ⊢
+      updateLocalChart, localizeProjection, LegacyV81.route] at h ⊢
 
 /-- The old projection-defect output is recovered only through the new guarded witness path. -/
 theorem v82_refines_v81_validated_projection_defeat
